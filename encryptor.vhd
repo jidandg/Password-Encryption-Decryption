@@ -5,21 +5,21 @@ USE STD.TEXTIO.ALL;
 
 ENTITY ENCRYPTOR IS
 	PORT(
-		CLOCK, START, MODE	: IN STD_LOGIC						:= '0';
-		HASH				: IN STD_LOGIC_VECTOR(7 DOWNTO 0)	:= "00000000"
+		CLOCK, START, MODE	: IN STD_LOGIC								:= '0';
+		HASH						: IN STD_LOGIC_VECTOR(7 DOWNTO 0)	:= "00000000"
 	);
 END ENTITY;
 
 ARCHITECTURE ALGORITHM OF ENCRYPTOR IS
-	FILE DEC								: TEXT;
-	FILE ENC								: TEXT;
+	FILE DEC											: TEXT;
+	FILE ENC											: TEXT;
 	
 --------------------------------------------------------------------------------
 --Ubah nilai N sesuai dengan panjang password yang ingin di-encrypt atau di-
 --decrypt.
 --------------------------------------------------------------------------------
 
-	SIGNAL N								: INTEGER						:= 16;
+	SIGNAL N											: INTEGER							:= 16;
 
 --------------------------------------------------------------------------------
 	
@@ -28,16 +28,16 @@ ARCHITECTURE ALGORITHM OF ENCRYPTOR IS
 --decrypt.txt dan encrypt.txt.
 --------------------------------------------------------------------------------
 
-	SIGNAL FILE_DEC							: STRING(1 TO 14) 				:= "D:\decrypt.txt";
-	SIGNAL FILE_ENC							: STRING(1 TO 14)				:= "D:\encrypt.txt";
+	SIGNAL FILE_DEC								: STRING(1 TO 14) 				:= "D:\decrypt.txt";
+	SIGNAL FILE_ENC								: STRING(1 TO 14)					:= "D:\encrypt.txt";
 	
 --------------------------------------------------------------------------------
 
-	SIGNAL STATUS_ENC, STATUS_DEC			: STRING(1 TO 15)				:= "               ";
-	SIGNAL PASS								: STRING(1 TO N);
-	SIGNAL TEMP_A							: UNSIGNED(7 DOWNTO 0);
+	SIGNAL STATUS_ENC, STATUS_DEC				: STRING(1 TO 15)					:= "               ";
+	SIGNAL PASS										: STRING(1 TO N);
+	SIGNAL TEMP_A									: UNSIGNED(7 DOWNTO 0);
 	SIGNAL TEMP_B, TEMP_C, TEMP_D, TEMP_E	: UNSIGNED((N*8)-1 DOWNTO 0);
-	SIGNAL HEX								: STRING(1 TO N*2);
+	SIGNAL HEX										: STRING(1 TO N*2);
 
 --------------------------------------------------------------------------------
 --Fungsi yang digunakan untuk merubah sinyal STD_LOGIC_VECTOR atau UNSIGNED
@@ -97,8 +97,8 @@ ARCHITECTURE ALGORITHM OF ENCRYPTOR IS
 
 BEGIN
 	ENCRYPT: PROCESS(CLOCK)
-		VARIABLE I		: INTEGER			:= 0;
-		VARIABLE ROW	: LINE;
+		VARIABLE I			: INTEGER			:= 0;
+		VARIABLE ROW		: LINE;
 		VARIABLE PASS_2	: STRING(1 TO N);
 	BEGIN
 		IF(RISING_EDGE(CLOCK)) THEN
@@ -114,8 +114,8 @@ BEGIN
 					END IF;
 				END IF;
 				IF(I >= 1 AND I <= N) THEN
-					STATUS_ENC	<= "Converting...  ";
-					TEMP_A		<= TO_UNSIGNED(CHARACTER'POS(PASS(I)), 8);
+					STATUS_ENC <= "Converting...  ";
+					TEMP_A <= TO_UNSIGNED(CHARACTER'POS(PASS(I)), 8);
 				END IF;
 				IF(I >= 2 AND I <= N+1) THEN
 
@@ -132,13 +132,13 @@ BEGIN
 				CASE I IS
 						WHEN 2		=> TEMP_B((N*8)-1 DOWNTO (N*8)-8)			<= TEMP_A;
 						WHEN 3		=> TEMP_B((N*8)-8-1 DOWNTO (N*8)-8*2)		<= TEMP_A;
-						WHEN 4		=> TEMP_B((N*8)-8*2-1 DOWNTO (N*8)-8*3)		<= TEMP_A;
-						WHEN 5		=> TEMP_B((N*8)-8*3-1 DOWNTO (N*8)-8*4)		<= TEMP_A;
-						WHEN 6		=> TEMP_B((N*8)-8*4-1 DOWNTO (N*8)-8*5)		<= TEMP_A;
-						WHEN 7		=> TEMP_B((N*8)-8*5-1 DOWNTO (N*8)-8*6)		<= TEMP_A;
-						WHEN 8		=> TEMP_B((N*8)-8*6-1 DOWNTO (N*8)-8*7)		<= TEMP_A;
-						WHEN 9		=> TEMP_B((N*8)-8*7-1 DOWNTO (N*8)-8*8)		<= TEMP_A;
-						WHEN 10		=> TEMP_B((N*8)-8*8-1 DOWNTO (N*8)-8*9)		<= TEMP_A;
+						WHEN 4		=> TEMP_B((N*8)-8*2-1 DOWNTO (N*8)-8*3)	<= TEMP_A;
+						WHEN 5		=> TEMP_B((N*8)-8*3-1 DOWNTO (N*8)-8*4)	<= TEMP_A;
+						WHEN 6		=> TEMP_B((N*8)-8*4-1 DOWNTO (N*8)-8*5)	<= TEMP_A;
+						WHEN 7		=> TEMP_B((N*8)-8*5-1 DOWNTO (N*8)-8*6)	<= TEMP_A;
+						WHEN 8		=> TEMP_B((N*8)-8*6-1 DOWNTO (N*8)-8*7)	<= TEMP_A;
+						WHEN 9		=> TEMP_B((N*8)-8*7-1 DOWNTO (N*8)-8*8)	<= TEMP_A;
+						WHEN 10		=> TEMP_B((N*8)-8*8-1 DOWNTO (N*8)-8*9)	<= TEMP_A;
 						WHEN 11		=> TEMP_B((N*8)-8*9-1 DOWNTO (N*8)-8*10)	<= TEMP_A;
 						WHEN 12		=> TEMP_B((N*8)-8*10-1 DOWNTO (N*8)-8*11)	<= TEMP_A;
 						WHEN 13		=> TEMP_B((N*8)-8*11-1 DOWNTO (N*8)-8*12)	<= TEMP_A;
@@ -146,7 +146,7 @@ BEGIN
 						WHEN 15		=> TEMP_B((N*8)-8*13-1 DOWNTO (N*8)-8*14)	<= TEMP_A;
 						WHEN 16		=> TEMP_B((N*8)-8*14-1 DOWNTO (N*8)-8*15)	<= TEMP_A;
 						WHEN 17		=> TEMP_B((N*8)-8*15-1 DOWNTO (N*8)-8*16)	<= TEMP_A;
-						WHEN OTHERS	=> TEMP_A									<= TEMP_A;
+						WHEN OTHERS	=> TEMP_A											<= TEMP_A;
 					END CASE;
 
 --------------------------------------------------------------------------------
@@ -182,8 +182,8 @@ BEGIN
 --------------------------------------------------------------------------------
 
 	DECRYPT: PROCESS(CLOCK)
-		VARIABLE I		: INTEGER						:= 0;
-		VARIABLE ROW	: LINE;
+		VARIABLE I			: INTEGER								:= 0;
+		VARIABLE ROW		: LINE;
 		VARIABLE TEMP_2	: BIT_VECTOR((N*8)-1 DOWNTO 0);
 	BEGIN
 		IF(RISING_EDGE(CLOCK)) THEN
